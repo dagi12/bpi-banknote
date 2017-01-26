@@ -5,26 +5,26 @@ import random
 
 class Vendor():
     def __init__(self):
-        self.klucz_publiczny = None
+        self.public_key = None
         self.bity = []
 
-    def odbierz_podpisane_banknoty(self, banknot):
+    def odbierz_signane_banknoty(self, banknot):
         self.banknot = banknot
-        for obecny_banknot in banknot:
-            obecny_banknot.ujawnij_M()
+        for current_banknote in banknot:
+            current_banknote.reveal_M()
 
-    def pobierz_klucz_publiczny(self, bank):
-        self.klucz_publiczny = bank.klucz_publiczny
+    def pobierz_public_key(self, bank):
+        self.public_key = bank.public_key
 
-    def weryfikuj_podpis(self):
+    def weryfikuj_sign(self):
         weryfikacja = True
-        for obecny_banknot in self.banknot:
-            if not self.klucz_publiczny.verify(obecny_banknot.M_ujawniony, ((obecny_banknot.podpis_S,))):
+        for current_banknote in self.banknot:
+            if not self.public_key.verify(current_banknote.M_revealed, ((current_banknote.sign_S,))):
                 weryfikacja = False
         if weryfikacja:
-            print "Vendor zaakceptował wszystkie podpisy Alice."
+            print "Vendor zaakceptował wszystkie signy Alice."
         else:
-            print "Vendor NIE zaakceptował podpisów Alice!"
+            print "Vendor NIE zaakceptował signów Alice!"
 
     def generuj_100_bitow(self):
         for i in range(1, 101):
@@ -33,23 +33,25 @@ class Vendor():
     def sprawdz_zobowiazanie(self):
         zobowiazanie_L = True
         zobowiazanie_R = True
-        for index, obecny_banknot in enumerate(self.banknot):
+        for index, current_banknote in enumerate(self.banknot):
             if self.bity[index] == 0:
                 # Sprawdzamy zobowiązanie bitowe dla prawej połowy
-                obecny_banknot.ujawnij_B()
-                obecny_banknot.ujawnij_L()
-                obecny_banknot.U2 = obecny_banknot.hashuj(obecny_banknot.string_S, obecny_banknot.string_B_ujawniony,
-                                                          obecny_banknot.string_L_ujawniony)
-                if obecny_banknot.U2 != obecny_banknot.string_U and obecny_banknot.string_S != obecny_banknot.string_S:
+                current_banknote.reveal_B()
+                current_banknote.reveal_L()
+                current_banknote.U2 = current_banknote.one_way_hash_fun(current_banknote.string_S,
+                                                                        current_banknote.string_B_revealed,
+                                                                        current_banknote.string_L_revealed)
+                if current_banknote.U2 != current_banknote.string_U and current_banknote.string_S != current_banknote.string_S:
                     zobowiazanie_L = False
 
             elif self.bity[index] == 1:
                 # Sprawdzamy zobowiązanie bitowe dla lewej połowy
-                obecny_banknot.ujawnij_C()
-                obecny_banknot.ujawnij_R()
-                obecny_banknot.W2 = obecny_banknot.hashuj(obecny_banknot.string_T, obecny_banknot.string_C_ujawniony,
-                                                          obecny_banknot.string_R_ujawniony)
-                if obecny_banknot.W2 != obecny_banknot.string_W and obecny_banknot.string_T != obecny_banknot.string_T:
+                current_banknote.reveal_C()
+                current_banknote.reveal_R()
+                current_banknote.W2 = current_banknote.one_way_hash_fun(current_banknote.string_T,
+                                                                        current_banknote.string_C_revealed,
+                                                                        current_banknote.string_R_revealed)
+                if current_banknote.W2 != current_banknote.string_W and current_banknote.string_T != current_banknote.string_T:
                     zobowiazanie_T = False
 
         if zobowiazanie_L:
