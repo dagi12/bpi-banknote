@@ -3,7 +3,7 @@
 import random
 
 
-class Sprzedawca():
+class Vendor():
     def __init__(self):
         self.klucz_publiczny = None
         self.bity = []
@@ -22,9 +22,9 @@ class Sprzedawca():
             if not self.klucz_publiczny.verify(obecny_banknot.M_ujawniony, ((obecny_banknot.podpis_S,))):
                 weryfikacja = False
         if weryfikacja:
-            print "Sprzedawca zaakceptował wszystkie podpisy Alice."
+            print "Vendor zaakceptował wszystkie podpisy Alice."
         else:
-            print "Sprzedawca NIE zaakceptował podpisów Alice!"
+            print "Vendor NIE zaakceptował podpisów Alice!"
 
     def generuj_100_bitow(self):
         for i in range(1, 101):
@@ -38,18 +38,18 @@ class Sprzedawca():
                 # Sprawdzamy zobowiązanie bitowe dla prawej połowy
                 obecny_banknot.ujawnij_B()
                 obecny_banknot.ujawnij_L()
-                obecny_banknot.U2 = obecny_banknot.hashuj(obecny_banknot.ciag_S, obecny_banknot.ciag_B_ujawniony,
-                                                          obecny_banknot.ciag_L_ujawniony)
-                if obecny_banknot.U2 != obecny_banknot.ciag_U and obecny_banknot.ciag_S != obecny_banknot.ciag_S:
+                obecny_banknot.U2 = obecny_banknot.hashuj(obecny_banknot.string_S, obecny_banknot.string_B_ujawniony,
+                                                          obecny_banknot.string_L_ujawniony)
+                if obecny_banknot.U2 != obecny_banknot.string_U and obecny_banknot.string_S != obecny_banknot.string_S:
                     zobowiazanie_L = False
 
             elif self.bity[index] == 1:
                 # Sprawdzamy zobowiązanie bitowe dla lewej połowy
                 obecny_banknot.ujawnij_C()
                 obecny_banknot.ujawnij_R()
-                obecny_banknot.W2 = obecny_banknot.hashuj(obecny_banknot.ciag_T, obecny_banknot.ciag_C_ujawniony,
-                                                          obecny_banknot.ciag_R_ujawniony)
-                if obecny_banknot.W2 != obecny_banknot.ciag_W and obecny_banknot.ciag_T != obecny_banknot.ciag_T:
+                obecny_banknot.W2 = obecny_banknot.hashuj(obecny_banknot.string_T, obecny_banknot.string_C_ujawniony,
+                                                          obecny_banknot.string_R_ujawniony)
+                if obecny_banknot.W2 != obecny_banknot.string_W and obecny_banknot.string_T != obecny_banknot.string_T:
                     zobowiazanie_T = False
 
         if zobowiazanie_L:

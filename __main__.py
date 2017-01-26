@@ -3,52 +3,48 @@
 # Tworzymy bank i Alice
 from alice import Alice
 from bank import Bank
-from vendor import Sprzedawca
+from vendor import Vendor
 
 bank = Bank()
 alice = Alice()
-sprzedawca = Sprzedawca()
+vendor = Vendor()
 
-# Alice tworzy 100 banknotów
-alice.generuj_100_banknotow(100)
+# Alice przygotowuje 100 różnych banknotów Mi na ustaloną kwotę i, 0, 1, 2, …, 100
+alice.generate_hundred_banknotes(100)
 
-# Alice zakrywa banknoty
-alice.zakryj_banknoty(bank)
+# Alice zakrywa wszystkie banknoty i wysyła do Banku.
+alice.blind_banknotes(bank)
+bank.receive_banknotes(alice.banknote)
 
-# Alice wysyła wszystkie 100 banknotów ZAKRYTYCH do banku
-bank.odbierz_banknoty(alice.banknot)
+# Alice odkrywa wybrane banknoty Mi, i != j i bank je sprawdza
+bank.unblind_banknotes()
 
-# Alice ujawnia 99 banknotów poza j-tym
-bank.odkryj_banknoty()
-
-# Bank sprawdza 99 banknotów
-bank.sprawdz_banknoty()
-
-# Bank ślepo podpisuje wszystkie banknoty
-bank.zloz_slepy_podpis()
+# Bank ślepo podpisuje banknote Mj i odsyła go Alice
+bank.check_banknotes()
+bank.do_blind_sign()
 
 # Alice odkrywa banknoty
-alice.odkryj_podpis(bank)
+alice.unblind_sign(bank)
 
-# Sprzedawca odbiera banknoty wraz z ich podpisami
-sprzedawca.odbierz_podpisane_banknoty(alice.banknot)
+# Vendor odbiera banknoty wraz z ich podpisami
+vendor.odbierz_podpisane_banknoty(alice.banknote)
 
-# Sprzedawca pobiera klucz publiczny banku
-sprzedawca.pobierz_klucz_publiczny(bank)
+# Vendor pobiera klucz publiczny banku
+vendor.pobierz_klucz_publiczny(bank)
 
-# Sprzedawca weryfikuje podpis
-sprzedawca.weryfikuj_podpis()
+# Vendor weryfikuje podpis
+vendor.weryfikuj_podpis()
 
-# Sprzedawca generuj 100 losowych bitów
-sprzedawca.generuj_100_bitow()
+# Vendor generuj 100 losowych bitów
+vendor.generuj_100_bitow()
 
 # Alice odbiera bity
-alice.odbierz_bity(sprzedawca)
+alice.odbierz_bity(vendor)
 
 # Alice w zależności od wartości bitów ujawnia zobowiazanie bitowe
-sprzedawca.sprawdz_zobowiazanie()
+vendor.sprawdz_zobowiazanie()
 
-# Sprzedawca wysyła banknoty do banku, który weryfikuje podpis
+# Vendor wysyła banknoty do banku, który weryfikuje podpis
 bank.weryfikuj_podpis()
 
 # Bank deponuje banknoty o ile nie zostały już wcześniej użyte

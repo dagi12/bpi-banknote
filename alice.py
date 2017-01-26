@@ -1,26 +1,29 @@
 #!/usr/bin/env python
 # -*- coding: utf-8 -*-
-from banknote import Banknot
+from banknote import Banknote
 
 
+# Alica – klientka banku i chce otrzymać elektroniczny banknote, którym będzie mogła dokonać zakupu w dowolnym sklepie.
+#  Transakcja Alice będzie anonimowa jeżeli ona będzie postępować zgodnie z protokołem
+# I wydanie elektronicznego banknotu przez bank
 class Alice():
     def __init__(self):
-        self.banknot = []
+        self.banknote = []
         self.M = None
 
-    def generuj_100_banknotow(self, kwota):
+    def generate_hundred_banknotes(self, amountY):
         for i in range(1, 101):
-            self.banknot.append(Banknot(kwota))
+            self.banknote.append(Banknote(amountY))
 
-    def zakryj_banknoty(self, bank):
-        for obecny_banknot in self.banknot:
-            obecny_banknot.zakryj_banknot(bank)
+    def blind_banknotes(self, bank):
+        for current_banknote in self.banknote:
+            current_banknote.blind_banknote(bank)
 
-    def odkryj_podpis(self, bank):
-        for obecny_banknot in self.banknot:
-            obecny_banknot.ujawnij_Z()
-            obecny_banknot.podpis_S = bank.klucz_publiczny.unblind(obecny_banknot.podpis_S_zakryty[0],
-                                                                   obecny_banknot.ciag_Z_ujawniony)
+    def unblind_sign(self, bank):
+        for current_banknote in self.banknote:
+            current_banknote.ujawnij_Z()
+            current_banknote.podpis_S = bank.klucz_publiczny.unblind(current_banknote.podpis_S_zakryty[0],
+                                                                     current_banknote.string_Z_ujawniony)
 
     def odbierz_bity(self, sprzedawca):
         self.bity = sprzedawca.bity
