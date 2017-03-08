@@ -96,8 +96,9 @@ class Bank():
             print "Zobowiazanie bitowe dla R NIE zgadza się!"
 
     def do_blind_sign(self):
-        for current_banknote in self.banknote:
-            current_banknote.sign_S_blinded = self.__private_key.sign(current_banknote.Y, 0)
+        current_banknote = self.banknote[self.exclude]
+        current_banknote.sign_S_blinded = self.__private_key.sign(current_banknote.Y, 0)
+        return current_banknote
 
     def weryfikuj_sign(self):
         weryfikacja = True

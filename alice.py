@@ -18,11 +18,7 @@ class Alice:
         for current_banknote in self.banknote:
             current_banknote.blind_banknote(public_key)
 
-    def unblind_sign(self, bank):
-        for current_banknote in self.banknote:
-            current_banknote.reveal_Z()
-            current_banknote.sign_S = bank.public_key.unblind(current_banknote.sign_S_blinded[0],
-                                                              current_banknote.string_Z_revealed)
-
-    def odbierz_bity(self, sprzedawca):
-        self.bity = sprzedawca.bity
+    def unblind_sign(self, banknote_j, bank):
+        banknote_j.reveal_Z()
+        banknote_j.sign_S = bank.public_key.unblind(banknote_j.sign_S_blinded[0],
+                                                    banknote_j.string_Z_revealed)
